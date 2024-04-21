@@ -1,8 +1,9 @@
 class Usuario {
   final String userName;
   final String password;
-
-  Usuario({required this.userName, required this.password});
+  final String mail;
+  
+  Usuario({required this.mail, required this.userName, required this.password});
   
   
   Map<String, dynamic> toJson() {
@@ -10,6 +11,18 @@ class Usuario {
       'userName': userName,
       'password': password,
     };
+  }
+
+  String getUser(){
+    return userName;
+  }
+
+  String getPassword(){
+    return password;
+  }
+  
+  String getMail(){
+    return mail;
   }
 }
 

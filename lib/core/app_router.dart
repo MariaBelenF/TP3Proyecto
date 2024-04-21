@@ -1,8 +1,10 @@
 import 'package:cine_practica/core/entities/User.dart';
+
 import 'package:cine_practica/presentation/home_screen.dart';
 import 'package:cine_practica/presentation/login_screen.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:cine_practica/presentation/initial_screen.dart';
+import 'package:cine_practica/presentation/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,23 +15,15 @@ final appRouter = GoRouter(routes: [
     name: InitialScreen.name,
   ),
   GoRoute(
-    path: '/login',
-    builder: (context, state) => LoginScreen(),
-    name: LoginScreen.name
-    ),
+      path: '/login',
+      builder: (context, state) => LoginScreen(),
+      name: LoginScreen.name),
   GoRoute(
     path: '/home',
     builder: (context, state) {
-      final Map<String, dynamic> extras = state.extra as Map<String, dynamic>;
-      final Map<String, dynamic> usuarioJson =
-          extras['usuario'] as Map<String, dynamic>;
-      final Usuario usuario = Usuario(
-        userName: usuarioJson['userName'],
-        password: usuarioJson['password'],
-      );
-
+      final Usuario user = state.extra as Usuario;
       return HomeScreen(
-        usuario: usuario,
+        usuario: user,
       );
     },
     name: HomeScreen.name,
@@ -37,18 +31,17 @@ final appRouter = GoRouter(routes: [
   GoRoute(
     path: '/profile',
     builder: (context, state) {
-      final Map<String, dynamic> extras = state.extra as Map<String, dynamic>;
-      final Map<String, dynamic> usuarioJson =
-          extras['usuario'] as Map<String, dynamic>;
-      final Usuario usuario = Usuario(
-        userName: usuarioJson['userName'],
-        password: usuarioJson['password'],
-      );
-
+      final Usuario user = state.extra as Usuario;
       return ProfileScreen(
-        usuario: usuario,
+        usuario: user,
       );
     },
     name: ProfileScreen.name,
   ),
+  GoRoute(
+      path: '/register',
+      builder: (context, state) => RegisterScreen(),
+      name: RegisterScreen.name)
 ]);
+
+

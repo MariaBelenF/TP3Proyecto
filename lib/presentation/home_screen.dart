@@ -1,3 +1,4 @@
+import 'package:cine_practica/core/app_router.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +22,7 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(Icons.person),
             onPressed: () {
                
-              context.goNamed(ProfileScreen.name, extra: {
-                 'usuario': usuario.toJson(),
-                },);
+              context.pushNamed(ProfileScreen.name, extra: usuario);
             },
           ),
         ],

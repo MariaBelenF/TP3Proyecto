@@ -1,3 +1,5 @@
+import 'package:cine_practica/core/entities/UserManager.dart';
+import 'package:cine_practica/presentation/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'login_screen.dart';
@@ -8,7 +10,7 @@ class InitialScreen extends StatelessWidget {
   static const String name = 'InitialScreen';
 
   InitialScreen({super.key});
-
+  
 @override
 Widget build(BuildContext context) {
   return Container(
@@ -61,7 +63,7 @@ Widget RegisterButton(BuildContext context) {
     ),
     onPressed: () {
       context.pushNamed(
-        HomeScreen.name,
+        RegisterScreen.name,
       );
     },
     child: Text(

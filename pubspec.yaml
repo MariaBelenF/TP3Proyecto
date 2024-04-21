@@ -22,6 +22,7 @@ flutter:
   assets:
     - assets/logo.png
     - assets/background.png
+    - assets/background2.png
 
 fonts:
   - family: Philosopher

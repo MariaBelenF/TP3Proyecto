@@ -1,4 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:cine_practica/core/app_router.dart';
 import 'package:cine_practica/core/entities/User.dart';
+import 'package:cine_practica/core/entities/UserManager.dart';
 import 'package:cine_practica/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +14,7 @@ class LoginScreen extends StatelessWidget {
 
   final TextEditingController _userTextFieldController = TextEditingController();
   final TextEditingController _passwordTextFieldController = TextEditingController();
-
+  final UserManager userManager = UserManager();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     fillColor: Color.fromARGB(255, 26, 26, 34),
                     filled: true,
-                    hintText: 'Ingrese su usuario',
+                    hintText: 'Ingrese su email',
                     hintStyle: TextStyle(color: Color.fromARGB(255, 187, 100, 151)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -83,24 +87,27 @@ class LoginScreen extends StatelessWidget {
                       ),
                     );
                   } else {
-                    Usuario usuario = Usuario(
-                      userName: _userTextFieldController.text,
-                      password: _passwordTextFieldController.text,
-                    );
-                    context.pushNamed(
+                    Usuario? usuario = userManager.existeUsuario(_userTextFieldController.text,  _passwordTextFieldController.text);
+                    if(usuario!=null){
+                      context.pushNamed(
                       HomeScreen.name,
-                      extra: {
-                        'usuario':
-                            usuario.toJson(), // Convertir a JSON antes de pasar
-                      },
+                      extra: usuario
+                      
+                    );
+                  }else{
+                     ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Las credenciales no coinciden con ningun usuario registrado'),
+                      ),
                     );
                   }
+                }
                 },
                 child: const Text(
                   'Login',
                   style: TextStyle(color: Color.fromARGB(255, 173, 0, 101)),
-                ),
-              )
+                )
+  )
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:cine_practica/core/app_router.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:flutter/material.dart';
 
