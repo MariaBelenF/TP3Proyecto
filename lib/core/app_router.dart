@@ -1,10 +1,13 @@
+import 'package:cine_practica/core/entities/Routine.dart';
 import 'package:cine_practica/core/entities/User.dart';
+import 'package:cine_practica/presentation/calendar_screen.dart';
 
 import 'package:cine_practica/presentation/home_screen.dart';
 import 'package:cine_practica/presentation/login_screen.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:cine_practica/presentation/initial_screen.dart';
 import 'package:cine_practica/presentation/register_screen.dart';
+import 'package:cine_practica/presentation/routine_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -41,7 +44,13 @@ final appRouter = GoRouter(routes: [
   GoRoute(
       path: '/register',
       builder: (context, state) => RegisterScreen(),
-      name: RegisterScreen.name)
+      name: RegisterScreen.name),
+  GoRoute(
+      path: '/calendar',
+      builder: ((context, state) => CalendarScreen()),
+      name: CalendarScreen.name),
+  GoRoute(
+      path: '/routines',
+      builder: (context, state) => RoutineScreen(),
+      name: RoutineScreen.name)
 ]);
-
-

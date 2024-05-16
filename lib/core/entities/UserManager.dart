@@ -1,4 +1,5 @@
 import 'package:cine_practica/core/app_router.dart';
+import 'package:cine_practica/core/entities/TypeOfTraining.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:flutter/foundation.dart'; 
 
@@ -8,7 +9,7 @@ class UserManager {
   static List<Usuario> get usuarios => _usuarios;
 
 UserManager(){
-  Usuario user = new Usuario(mail: 'fontanamariabelen@gmail.com', userName: 'Maria Belen Fontana', password: '123');
+  Usuario user = new Usuario(mail: 'fontanamariabelen@gmail.com', userName: 'Maria Belen Fontana',age: 20, training: TypeOfTraining.Strength, password: '123');
   agregarUsuario(user);
 }
   void agregarUsuario(Usuario usuario) {
