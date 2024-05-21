@@ -155,6 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           mail: _registerMailTFController.text,
                         );
                         userManager.agregarUsuario(usuario);
+                        userManager.setLoggedUser(usuario);
                         context.goNamed(
                           HomeScreen.name,
                           extra: usuario,

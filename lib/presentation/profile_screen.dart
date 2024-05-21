@@ -5,12 +5,10 @@ import 'package:flutter/material.dart';
 class ProfileScreen extends StatelessWidget {
   static const String name = 'ProfileScreen';
 
-  final Usuario usuario;
+  
 
 ProfileScreen({
-    Key? key,
-    required this.usuario
-  }) : super(key: key);
+    Key? key}) : super(key: key);
 
 
   @override
@@ -25,8 +23,8 @@ ProfileScreen({
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Usuario: ${usuario.userName}'),
-            Text('Contraseña: ${usuario.password}'),
+            //Text('Usuario: ${usuario.userName}'),
+            // Text('Contraseña: ${usuario.password}'),
             // Otros detalles del perfil aquí
           ],
         ),

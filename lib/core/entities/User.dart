@@ -30,5 +30,10 @@ class Usuario {
   String getMail(){
     return mail;
   }
+   @override
+  String toString() {
+    return '$userName ';
+  }
+
 }
 

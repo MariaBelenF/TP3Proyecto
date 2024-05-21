@@ -24,20 +24,14 @@ final appRouter = GoRouter(routes: [
   GoRoute(
     path: '/home',
     builder: (context, state) {
-      final Usuario user = state.extra as Usuario;
-      return HomeScreen(
-        usuario: user,
-      );
+      return HomeScreen();
     },
     name: HomeScreen.name,
   ),
   GoRoute(
     path: '/profile',
     builder: (context, state) {
-      final Usuario user = state.extra as Usuario;
-      return ProfileScreen(
-        usuario: user,
-      );
+      return ProfileScreen();
     },
     name: ProfileScreen.name,
   ),

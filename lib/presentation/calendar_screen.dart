@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:cine_practica/presentation/bottom_navigation_bar.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({Key? key}) : super(key: key);
@@ -32,6 +33,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 0),
       appBar: AppBar(
         title: Text('Calendario'),
       ),
