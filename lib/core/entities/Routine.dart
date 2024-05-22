@@ -9,7 +9,7 @@ class Routine {
   final int duration;
   final List<Exercise> exercises;
   final int aim;
-  
+  // en vez de aim puede ser goal
 
   const Routine({
     required this.title,
@@ -19,4 +19,11 @@ class Routine {
     required this.aim,
  
   });
+
+int getDuration(){
+  return this.duration;
+}
+String getTitle(){
+  return title;
+}
 }

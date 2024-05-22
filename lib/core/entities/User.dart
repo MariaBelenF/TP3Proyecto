@@ -9,9 +9,8 @@ class Usuario {
   final TypeOfTraining training;
   final Routine? currentRoutine;
   final int? daysDone; //dias de rutina hechos
-  Usuario({required this.mail, required this.userName, required this.password,required this.age, required this.training, this.currentRoutine, this.daysDone});
-  
-  
+  Usuario({required this.mail, required this.userName, required this.password,required this.age, required this.training, required this.currentRoutine, this.daysDone});
+ 
   Map<String, dynamic> toJson() {
     return {
       'userName': userName,
@@ -35,5 +34,8 @@ class Usuario {
     return '$userName ';
   }
 
+  Routine? getRoutine(){
+    return currentRoutine;
+  }
 }
 

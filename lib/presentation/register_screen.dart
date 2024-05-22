@@ -1,3 +1,4 @@
+import 'package:cine_practica/core/entities/Routine.dart';
 import 'package:cine_practica/core/entities/TypeOfTraining.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/core/entities/UserManager.dart';
@@ -20,7 +21,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _registerPasswordTFController = TextEditingController();
   final TextEditingController _registerMailTFController = TextEditingController();
   final TextEditingController _registerAgeTFController = TextEditingController();
-
+ //Exercise ejercicio1 = new Exercise(title: 'Push up', imageLink: 'https://media.istockphoto.com/id/882882258/es/vector/el-joven-afroamericana-activos-est%C3%A1-haciendo-la-empuja-hacia-arriba-el-ejercicio.jpg?s=612x612&w=0&k=20&c=oeVJw6tTg2Q54puyY1wBof74k-nDLR92WgKZfy2_ds0=', description: 'Push up');
+   Routine myRoutine = Routine(
+    title: 'Desafío de Fuerza Total',
+    duration: 30, 
+    aim: 10,
+    description: 'Aumentá tu fuerza y mejorá tu estado fisico al máximo con esta rutina de 30 días',
+    exercises: [], 
+  );
 
   TypeOfTraining dropdownValue = TypeOfTraining.LossWeight; // Valor inicial de tipo de entrenamiento
   UserManager userManager = UserManager();
@@ -153,6 +161,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           age: age ?? 0,
                           training: dropdownValue!,
                           mail: _registerMailTFController.text,
+                          currentRoutine: myRoutine
+                          
                         );
                         userManager.agregarUsuario(usuario);
                         userManager.setLoggedUser(usuario);
