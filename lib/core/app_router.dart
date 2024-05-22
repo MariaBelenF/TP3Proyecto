@@ -44,7 +44,7 @@ final appRouter = GoRouter(routes: [
       builder: ((context, state) => CalendarScreen()),
       name: CalendarScreen.name),
   GoRoute(
-      path: '/routines',
+      path: '/routine',
       builder: (context, state) => RoutineScreen(),
       name: RoutineScreen.name)
 ]);

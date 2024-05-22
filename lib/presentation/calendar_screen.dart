@@ -68,6 +68,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         title: Text('Calendario'),
       ),
       body: Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TableCalendar(
             firstDay: DateTime.utc(2022, 1, 1),
@@ -107,11 +108,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
+            child: Text('Rutina en proceso',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              )
+            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Text(
               routineTitle,
               style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontSize: 17,
+                
               ),
             ),
           ),
@@ -132,8 +142,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     _selectedDay.month,
                     day,
                   ))
-                      ? Colors.green
-                      : Colors.grey,
+                      ? Color.fromARGB(255, 41, 42, 92)
+                      : Color.fromARGB(255, 156, 73, 136),
                   child: Text(
                     day.toString(),
                     style: TextStyle(color: Colors.white),
@@ -141,6 +151,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
               );
             }).toList(),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Rutinas finalizadas',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           Expanded(
             child: ValueListenableBuilder<List<dynamic>>(
