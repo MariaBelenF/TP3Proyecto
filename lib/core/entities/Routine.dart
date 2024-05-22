@@ -1,7 +1,4 @@
-
-
 import 'package:cine_practica/core/entities/Exercise.dart';
-import 'package:flutter/material.dart';
 
 class Routine {
   final String title;
@@ -9,21 +6,30 @@ class Routine {
   final int duration;
   final List<Exercise> exercises;
   final int aim;
-  // en vez de aim puede ser goal
+  List<DateTime> daysDone;
 
-  const Routine({
+  Routine({
     required this.title,
     required this.description,
     required this.duration,
     required this.exercises,
     required this.aim,
- 
-  });
+    List<DateTime>? daysDone,
+  }) : this.daysDone = daysDone ?? [];
 
-int getDuration(){
-  return this.duration;
-}
-String getTitle(){
-  return title;
-}
+  int getDuration() {
+    return this.duration;
+  }
+
+  String getTitle() {
+    return title;
+  }
+
+  void addDayDone(DateTime day) {
+    daysDone.add(day);
+  }
+
+  void removeDayDone(DateTime day) {
+    daysDone.remove(day);
+  }
 }

@@ -18,9 +18,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   late ValueNotifier<List<dynamic>> _selectedEvents;
   UserManager manager = UserManager();
   late DateTime _focusedDay;
-  late List<int> _routineDays; // Días de la rutina
-  late Set<DateTime> _exerciseDays; // Días de ejercicio
-  late String routineTitle; // Título de la rutina
+  late List<int> _routineDays;
+  late Set<DateTime> _exerciseDays;
+  late String routineTitle;
 
   @override
   void initState() {
@@ -30,13 +30,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
     _focusedDay = DateTime.now();
     _events = {};
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay));
-    _exerciseDays = {}; // Inicializar conjunto de días de ejercicio
+    _exerciseDays = {};
 
-    // Obtener la rutina del usuario logueado
     final loggedUser = manager.getLoggedUser();
     if (loggedUser != null && loggedUser.currentRoutine != null) {
-      routineTitle = loggedUser.currentRoutine!.getTitle(); // Nombre de la rutina
+      routineTitle = loggedUser.currentRoutine!.title;
       _routineDays = List<int>.generate(loggedUser.currentRoutine!.duration, (i) => i + 1);
+      _exerciseDays = loggedUser.currentRoutine!.daysDone.toSet();
     } else {
       routineTitle = 'No hay rutina asignada';
       _routineDays = [];
@@ -49,10 +49,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   void _toggleExerciseDay(DateTime day) {
     setState(() {
+      final loggedUser = manager.getLoggedUser();
       if (_exerciseDays.contains(day)) {
         _exerciseDays.remove(day);
+        loggedUser?.currentRoutine?.removeDayDone(day);
       } else {
         _exerciseDays.add(day);
+        loggedUser?.currentRoutine?.addDayDone(day);
       }
     });
   }
@@ -77,7 +80,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDay = selectedDay;
-                _focusedDay = focusedDay; // Update focused day
+                _focusedDay = focusedDay;
                 _selectedEvents.value = _getEventsForDay(selectedDay);
               });
             },
@@ -148,7 +151,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(events[index].toString()),
-                      // Add more details if needed
                     );
                   },
                 );

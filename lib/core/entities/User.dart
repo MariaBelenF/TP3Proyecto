@@ -34,6 +34,8 @@ class Usuario {
     return '$userName ';
   }
 
+  
+
   Routine? getRoutine(){
     return currentRoutine;
   }

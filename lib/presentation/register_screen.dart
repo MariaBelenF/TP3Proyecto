@@ -30,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     exercises: [], 
   );
 
-  TypeOfTraining dropdownValue = TypeOfTraining.LossWeight; // Valor inicial de tipo de entrenamiento
+  TypeOfTraining dropdownValue = TypeOfTraining.LoseWeight; // Valor inicial de tipo de entrenamiento
   UserManager userManager = UserManager();
 
   @override

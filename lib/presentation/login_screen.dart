@@ -89,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                   } else {
                     Usuario? usuario = userManager.existeUsuario(_userTextFieldController.text,  _passwordTextFieldController.text);
                     if(usuario!=null){
-                      context.pushNamed(HomeScreen.name);
+                      context.goNamed(HomeScreen.name);
                       userManager.setLoggedUser(usuario);
                   }else{
                      ScaffoldMessenger.of(context).showSnackBar(
