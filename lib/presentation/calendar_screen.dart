@@ -143,7 +143,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     day,
                   ))
                       ? Color.fromARGB(255, 41, 42, 92)
-                      : Color.fromARGB(255, 156, 73, 136),
+                      : Color.fromARGB(255, 53, 9, 43),
                   child: Text(
                     day.toString(),
                     style: TextStyle(color: Colors.white),

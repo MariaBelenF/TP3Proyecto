@@ -33,9 +33,10 @@ class ExerciseScreen extends StatelessWidget {
             ),
             SizedBox(height: 10,),
               Image.network(
-              user!.getRoutine()!.exercises[0].imageLink,
-              width: 200, // Ancho de la imagen
-              height: 200, // Alto de la imagen
+              user.getRoutine()!.exercises[0].imageLink,
+             // width: 200, // Ancho de la imagen
+              
+              //height: 200, // Alto de la imagen
               fit: BoxFit.cover, // Ajuste de la imagen dentro del contenedor
             ),
           ],

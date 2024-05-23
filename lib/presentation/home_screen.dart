@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final Usuario? currentUser = userManager.getLoggedUser();
     TypeOfTraining tr = currentUser!.training;
     if (currentUser == null || currentUser.currentRoutine == null) {
@@ -30,7 +31,7 @@ class HomeScreen extends StatelessWidget {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text(currentUser.userName), // Usar el nombre de usuario
+        title: Text(currentUser.userName), 
         actions: [
           IconButton(
             icon: Icon(Icons.person),
@@ -41,7 +42,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0), // Padding para toda la pantalla
+        padding: EdgeInsets.all(16.0), 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -49,10 +50,10 @@ class HomeScreen extends StatelessWidget {
             Text('${tr.name}'),
             SizedBox(height: 10),
             Container(
-              width: MediaQuery.of(context).size.width, // Ancho completo de la pantalla
+              width: MediaQuery.of(context).size.width, 
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 7, 39, 54), 
+                color: const Color.fromARGB(255, 61, 27, 48),
                 borderRadius: BorderRadius.circular(7), 
               ),
               child: Column(

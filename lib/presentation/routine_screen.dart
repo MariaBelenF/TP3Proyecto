@@ -1,4 +1,4 @@
-import 'package:cine_practica/core/entities/Exercise.dart'; // Importa la clase Exercise si no está importada
+import 'package:cine_practica/core/entities/Exercise.dart'; 
 import 'package:flutter/material.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/core/entities/UserManager.dart';
@@ -17,7 +17,7 @@ class RoutineScreen extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 0),
       body: Padding(
-          padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 16.0),
+          padding: EdgeInsets.fromLTRB(20.0, 30.0, 16.0, 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

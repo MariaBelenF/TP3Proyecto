@@ -19,7 +19,7 @@ UserManager(){
     description: 'Aumentá tu fuerza y mejorá tu estado fisico al máximo con esta rutina de 30 días',
     exercises: [ejercicio1], 
   );
-  Usuario user = new Usuario(mail: 'fontanamariabelen@gmail.com', userName: 'Maria Belen Fontana',age: 20, training: TypeOfTraining.Strength, password: '123', currentRoutine: myRoutine);
+  Usuario user = new Usuario(mail: 'mail@gmail.com', userName: 'Maria Belen Fontana',age: 20, training: TypeOfTraining.Strength, password: '123', currentRoutine: myRoutine);
   agregarUsuario(user);
 }
   void agregarUsuario(Usuario usuario) {
