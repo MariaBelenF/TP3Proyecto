@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "741656408313",
+    "firebase_url": "https://fitapp-3644b-default-rtdb.firebaseio.com",
+    "project_id": "fitapp-3644b",
+    "storage_bucket": "fitapp-3644b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741656408313:android:03463b10b7d89181127228",
+        "android_client_info": {
+          "package_name": "com.example.cine_practica"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4Wp3dqRdgn1q1HgFrc8Gj2KbW7A9fDjc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
