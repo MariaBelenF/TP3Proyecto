@@ -4,11 +4,16 @@ class Exercise {
   final String title;
   final String imageLink;
   final String description;
+  bool done;
   
-  const Exercise({
+   Exercise({
     required this.title,
     required this.imageLink,
-    required this.description
+    required this.description,
+    this.done = false
   });
+  void toggleDone() {
+    done = !done;
+  }
 }
 
