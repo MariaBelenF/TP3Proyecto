@@ -16,7 +16,7 @@ UserManager(){
    Exercise ejercicio3 = new Exercise(title: 'Plancha', imageLink: 'https://media.vogue.es/photos/5fd243f80800022c258951da/master/w_1600%2Cc_limit/tabla-de-ejercicios2-4.jpg', description: 'Coloca los antebrazos en el suelo directamente debajo de los hombros y extiende las piernas hacia atrás apoyando las puntas de los pies. Mantén el cuerpo en una línea recta desde la cabeza hasta los talones, activando el núcleo y manteniendo la espalda recta. Sostén esta posición sin dejar que las caderas se hundan o se levanten, durante el tiempo deseado.');
    Exercise ejercicio4 = new Exercise(title: 'Estocada', imageLink: 'https://static.vecteezy.com/system/resources/previews/008/424/322/non_2x/illustrated-exercise-guide-by-healthy-man-doing-lunges-workout-in-2-steps-for-firming-buttocks-and-legs-vector.jpg', description: 'Da un paso largo hacia adelante con una pierna y baja el cuerpo hasta que ambas rodillas formen ángulos de 90 grados. La rodilla trasera debe casi tocar el suelo y la delantera debe estar alineada con el tobillo. Mantén el torso erguido y el núcleo activado. Empuja con el talón delantero para volver a la posición inicial y repite con la otra pierna.');
    Routine myRoutine = Routine(
-    title: 'Desafío de Fuerza Total',
+    title: 'Fuerza Total',
     duration: 30, 
     aim: 10,
     description: 'Aumentá tu fuerza y mejorá tu estado fisico al máximo con esta rutina de 30 días',

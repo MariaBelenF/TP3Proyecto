@@ -1,5 +1,7 @@
 import 'package:cine_practica/core/entities/UserManager.dart';
+import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cine_practica/presentation/bottom_navigation_bar.dart';
 
@@ -66,6 +68,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
       bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 1),
       appBar: AppBar(
         title: Text('Calendario'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              context.pushNamed(ProfileScreen.name);
+            },
+          ),
+        ],
       ),
       body: Column(
          crossAxisAlignment: CrossAxisAlignment.start,

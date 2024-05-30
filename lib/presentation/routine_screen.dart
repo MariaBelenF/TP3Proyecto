@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:cine_practica/core/entities/Exercise.dart';
+import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/core/entities/UserManager.dart';
 import 'package:cine_practica/presentation/bottom_navigation_bar.dart';
+import 'package:go_router/go_router.dart';
 
 class RoutineScreen extends StatefulWidget {
   static const String name = 'RoutineScreen';
@@ -15,6 +17,7 @@ class RoutineScreen extends StatefulWidget {
 
 class _RoutineScreenState extends State<RoutineScreen> {
   final UserManager manager = UserManager();
+
   late List<Exercise> exercises;
   Map<int, bool> checkedStatus = {};
 
@@ -36,6 +39,7 @@ class _RoutineScreenState extends State<RoutineScreen> {
   }
 
   void _showExerciseDetails(BuildContext context, Exercise exercise) {
+    
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -68,21 +72,29 @@ class _RoutineScreenState extends State<RoutineScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Usuario? currentUser = manager.getLoggedUser();
     final user = manager.getLoggedUser();
     final routineTitle =
         user?.getRoutine()?.getTitle() ?? 'Sin rutina asignada';
 
-    return Scaffold(
+    return Scaffold( appBar: AppBar(
+        title: Text('Entrenamiento - ${routineTitle}'), 
+        actions: [
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              context.pushNamed(ProfileScreen.name);
+            },
+          ),
+        ],
+      ),
       bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 0),
       body: Padding(
-        padding: EdgeInsets.fromLTRB(20.0, 30.0, 16.0, 16.0),
+        padding: EdgeInsets.fromLTRB(20.0, 10.0, 16.0, 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              routineTitle,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            
             SizedBox(height: 10),
             Text(
               'Ejercicios:',
