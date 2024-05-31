@@ -6,7 +6,7 @@ class Routine {
   final int duration;
   final List<Exercise> exercises;
   final int aim;
-  List<DateTime> daysDone;
+  List<DateTime> daysDone; //esto es de user
 
   Routine({
     required this.title,
@@ -32,4 +32,5 @@ class Routine {
   void removeDayDone(DateTime day) {
     daysDone.remove(day);
   }
+
 }

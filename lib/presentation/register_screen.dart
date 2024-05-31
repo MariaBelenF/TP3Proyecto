@@ -149,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           _registerMailTFController.text.isEmpty ||
                           _registerAgeTFController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text('Por favor, ingrese todos dos campos'),
                           ),
                         );
@@ -161,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           age: age ?? 0,
                           training: dropdownValue!,
                           mail: _registerMailTFController.text,
-                          currentRoutine: myRoutine
+                          currentRoutine: myRoutine,
                           
                         );
                         userManager.agregarUsuario(usuario);

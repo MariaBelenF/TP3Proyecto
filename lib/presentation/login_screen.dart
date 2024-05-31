@@ -10,10 +10,12 @@ import 'package:go_router/go_router.dart';
 class LoginScreen extends StatelessWidget {
   static const String name = 'LoginScreen';
 
-   LoginScreen({super.key});
+  LoginScreen({super.key});
 
-  final TextEditingController _userTextFieldController = TextEditingController();
-  final TextEditingController _passwordTextFieldController = TextEditingController();
+  final TextEditingController _userTextFieldController =
+      TextEditingController();
+  final TextEditingController _passwordTextFieldController =
+      TextEditingController();
   final UserManager userManager = UserManager();
   @override
   Widget build(BuildContext context) {
@@ -46,12 +48,15 @@ class LoginScreen extends StatelessWidget {
                     fillColor: Color.fromARGB(255, 26, 26, 34),
                     filled: true,
                     hintText: 'Ingrese su email',
-                    hintStyle: TextStyle(color: Color.fromARGB(255, 187, 100, 151)),
+                    hintStyle:
+                        TextStyle(color: Color.fromARGB(255, 187, 100, 151)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  style: TextStyle(color: Color.fromARGB(255, 187, 100, 151)), // Cambiar color del texto
+                  style: TextStyle(
+                      color: Color.fromARGB(
+                          255, 187, 100, 151)), // Cambiar color del texto
                 ),
               ),
               SizedBox(height: 20), // Espacio entre los textfield
@@ -64,47 +69,52 @@ class LoginScreen extends StatelessWidget {
                     fillColor: Color.fromARGB(255, 26, 26, 34),
                     filled: true,
                     hintText: 'Ingrese su contraseña',
-                    hintStyle: TextStyle(color: Color.fromARGB(255, 187, 100, 151)),
+                    hintStyle:
+                        TextStyle(color: Color.fromARGB(255, 187, 100, 151)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  style: TextStyle(color: Color.fromARGB(255, 187, 100, 151)), // Cambiar color del texto
+                  style: TextStyle(
+                      color: Color.fromARGB(
+                          255, 187, 100, 151)), // Cambiar color del texto
                 ),
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 32, 32, 34),
-                  elevation: 5,
-                ),
-                onPressed: () {
-                  if (_userTextFieldController.text.isEmpty ||
-                      _passwordTextFieldController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Por favor, ingrese los dos campos'),
-                      ),
-                    );
-                  } else {
-                    Usuario? usuario = userManager.existeUsuario(_userTextFieldController.text,  _passwordTextFieldController.text);
-                    if(usuario!=null){
-                      context.goNamed(HomeScreen.name);
-                      userManager.setLoggedUser(usuario);
-                  }else{
-                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Las credenciales no coinciden con ningun usuario registrado'),
-                      ),
-                    );
-                  }
-                }
-                },
-                child: const Text(
-                  'Login',
-                  style: TextStyle(color: Color.fromARGB(255, 173, 0, 101)),
-                )
-  )
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 32, 32, 34),
+                    elevation: 5,
+                  ),
+                  onPressed: () {
+                    if (_userTextFieldController.text.isEmpty ||
+                        _passwordTextFieldController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Por favor, ingrese los dos campos'),
+                        ),
+                      );
+                    } else {
+                      userManager.login(_userTextFieldController.text,
+                          _passwordTextFieldController.text);
+                      Usuario? usuario = userManager.getLoggedUser();
+                      if (usuario != null) {
+                        context.goNamed(HomeScreen.name);
+                        userManager.setLoggedUser(usuario);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                'Las credenciales no coinciden con ningun usuario registrado'),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(color: Color.fromARGB(255, 173, 0, 101)),
+                  ))
             ],
           ),
         ),

@@ -16,7 +16,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final Usuario? currentUser = userManager.getLoggedUser();
-    TypeOfTraining tr = currentUser!.training;
+    TypeOfTraining tr = currentUser?.training ?? TypeOfTraining.Running;
+
     if (currentUser == null || currentUser.currentRoutine == null) {
       return Scaffold(
         appBar: AppBar(

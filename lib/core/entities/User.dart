@@ -1,3 +1,47 @@
+// import 'package:cine_practica/core/entities/Routine.dart';
+// import 'package:cine_practica/core/entities/TypeOfTraining.dart';
+
+// class Usuario {
+//   final String userName;
+//   final String password;
+//   final String mail;
+//   final int age;
+//   final TypeOfTraining training;
+//   final Routine? currentRoutine;
+//   final int? daysDone; //dias de rutina hechos
+//   Usuario({required this.mail, required this.userName, required this.password,required this.age, required this.training, required this.currentRoutine, this.daysDone});
+ 
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'userName': userName,
+//       'password': password,
+//     };
+//   }
+
+//   String getUser(){
+//     return userName;
+//   }
+
+//   String getPassword(){
+//     return password;
+//   }
+  
+//   String getMail(){
+//     return mail;
+//   }
+//    @override
+//   String toString() {
+//     return '$userName ';
+//   }
+
+  
+
+//   Routine? getRoutine(){
+//     return currentRoutine;
+//   }
+// }
+
+
 import 'package:cine_practica/core/entities/Routine.dart';
 import 'package:cine_practica/core/entities/TypeOfTraining.dart';
 
@@ -6,37 +50,25 @@ class Usuario {
   final String password;
   final String mail;
   final int age;
-  final TypeOfTraining training;
+  final TypeOfTraining? training;
   final Routine? currentRoutine;
   final int? daysDone; //dias de rutina hechos
-  Usuario({required this.mail, required this.userName, required this.password,required this.age, required this.training, required this.currentRoutine, this.daysDone});
- 
-  Map<String, dynamic> toJson() {
-    return {
-      'userName': userName,
-      'password': password,
-    };
-  }
+  Usuario(
+      {required this.mail,
+      required this.userName,
+      required this.password,
+      required this.age,
+      required this.training,
+      required this.currentRoutine,
+      this.daysDone});
 
-  String getUser(){
-    return userName;
-  }
 
-  String getPassword(){
-    return password;
-  }
-  
-  String getMail(){
-    return mail;
-  }
-   @override
+  @override
   String toString() {
-    return '$userName ';
+    return '$userName';
   }
 
-  
-
-  Routine? getRoutine(){
+  Routine? getRoutine() {
     return currentRoutine;
   }
 }
