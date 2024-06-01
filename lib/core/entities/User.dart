@@ -51,7 +51,7 @@ class Usuario {
   final String mail;
   final int age;
   final TypeOfTraining? training;
-  final Routine? currentRoutine;
+  Routine? currentRoutine;
   final int? daysDone; //dias de rutina hechos
   Usuario(
       {required this.mail,
