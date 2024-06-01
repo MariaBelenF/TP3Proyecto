@@ -3,45 +3,49 @@ import 'dart:convert';
 import '../core/entities/User.dart';
 import '../core/entities/UserManager.dart';
 import '../core/entities/TypeOfTraining.dart';
+import '../core/entities/Routine.dart';
+import '../core/entities/Exercise.dart';
 
 // class AuthService {
-//   final UserManager _userManager = UserManager();
+//   final UserManager _userManager;
+
+//   AuthService(this._userManager);
+
 //   final String baseUrl = 'https://665887705c3617052648e130.mockapi.io/api';
 
-//   loginAndSetUser(String email, String password) async {
+//   Future<void> loginAndSetUser(String email, String password) async {
 //     final response = await http.get(
 //       Uri.parse('$baseUrl/users'),
 //       headers: {'Content-Type': 'application/json'},
 //     );
-
+    
 //     if (response.statusCode == 200) {
 //       final List<dynamic> users = jsonDecode(response.body);
 //       for (var userData in users) {
 //         if (userData['mail'] == email && userData['password'] == password) {
-//           // Crear una instancia de Usuario directamente desde los datos del JSON
 //           final userOK = Usuario(
 //             mail: userData['mail'],
 //             userName: userData['userName'],
 //             password: userData['password'],
 //             age: userData['age'],
-//             training: TypeOfTraining.values[userData['training']],
+//             training: userData['training'] != null
+//                 ? TypeOfTraining.values[0]
+//                 : null,
 //             currentRoutine: userData['currentRoutine'],
 //             daysDone: userData['daysDone'],
 //           );
-//           // Establecer el usuario conectado en UserManager
+
 //           _userManager.setLoggedUser(userOK);
-//           //Agregar Usuario
 //           _userManager.agregarUsuario(userOK);
-//           return userOK;
+//           return;
 //         }
 //       }
-//       throw Exception('User not found');
+//       throw Exception('User not found. Users: $users');
 //     } else {
 //       throw Exception('Failed to load users');
 //     }
 //   }
 // }
-
 
 class AuthService {
   final UserManager _userManager;
@@ -55,31 +59,62 @@ class AuthService {
       Uri.parse('$baseUrl/users'),
       headers: {'Content-Type': 'application/json'},
     );
-    
+
     if (response.statusCode == 200) {
       final List<dynamic> users = jsonDecode(response.body);
       for (var userData in users) {
         if (userData['mail'] == email && userData['password'] == password) {
-          final userOK = Usuario(
-            mail: userData['mail'],
-            userName: userData['userName'],
-            password: userData['password'],
-            age: userData['age'],
-            training: userData['training'] != null
-                ? TypeOfTraining.values[0]
-                : null,
-            currentRoutine: userData['currentRoutine'],
-            daysDone: userData['daysDone'],
+          final int routineId = userData['idCurrentRoutine'];
+          final routineResponse = await http.get(
+            Uri.parse('$baseUrl/routines/$routineId'),
+            headers: {'Content-Type': 'application/json'},
           );
 
-          _userManager.setLoggedUser(userOK);
-          _userManager.agregarUsuario(userOK);
-          return;
+          if (routineResponse.statusCode == 200) {
+            final routineData = jsonDecode(routineResponse.body);
+            
+            List<Exercise> exercises = (routineData['exercises'] as List)
+                .map((exerciseData) => Exercise(
+                      title: exerciseData['title'],
+                      imageLink: exerciseData['imageLink'],
+                      description: exerciseData['description'],
+                    ))
+                .toList();
+
+            final Routine routine = Routine(
+              title: routineData['title'],
+              description: routineData['description'],
+              duration: routineData['duration'],
+              exercises: exercises,
+              aim: routineData['aim'],
+            );
+
+            final userOK = Usuario(
+              mail: userData['mail'],
+              userName: userData['userName'],
+              password: userData['password'],
+              age: userData['age'],
+              training: userData['training'] != null
+                  ? TypeOfTraining.values.firstWhere(
+                      (type) => type.name == userData['training'],
+                      orElse: () => TypeOfTraining.values[0])
+                  : null,
+              currentRoutine: routine,
+              daysDone: userData['daysDone'],
+            );
+
+            _userManager.setLoggedUser(userOK);
+            _userManager.agregarUsuario(userOK);
+            return;
+          } else {
+            throw Exception('Failed to load routine for user');
+          }
         }
       }
-      throw Exception('User not found. Users: $users');
+      throw Exception('User not found. Users: ${_userManager.getLoggedUser()}');
     } else {
       throw Exception('Failed to load users');
     }
   }
 }
+
