@@ -87,6 +87,7 @@ class AuthService {
               duration: routineData['duration'],
               exercises: exercises,
               aim: routineData['aim'],
+              
             );
 
             final userOK = Usuario(

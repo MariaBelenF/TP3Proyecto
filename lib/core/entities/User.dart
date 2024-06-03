@@ -71,5 +71,9 @@ class Usuario {
   Routine? getRoutine() {
     return currentRoutine;
   }
+
+  void setRoutine(Routine rutina){
+    currentRoutine = rutina;
+  }
 }
 

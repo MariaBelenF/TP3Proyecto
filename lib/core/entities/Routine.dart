@@ -6,7 +6,9 @@ class Routine {
   final int duration;
   final List<Exercise> exercises;
   final int aim;
-  List<DateTime> daysDone; //esto es de user
+  final String? image;
+  List<DateTime> daysDone;
+   //esto es de user
 
   Routine({
     required this.title,
@@ -14,6 +16,7 @@ class Routine {
     required this.duration,
     required this.exercises,
     required this.aim,
+    this.image,
     List<DateTime>? daysDone,
   }) : this.daysDone = daysDone ?? [];
 
@@ -25,6 +28,7 @@ class Routine {
     return title;
   }
 
+
   void addDayDone(DateTime day) {
     daysDone.add(day);
   }
@@ -34,3 +38,4 @@ class Routine {
   }
 
 }
+

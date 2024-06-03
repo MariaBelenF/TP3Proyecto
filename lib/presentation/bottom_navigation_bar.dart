@@ -27,7 +27,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           label: 'Entrenamiento',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.battery_0_bar),
+          icon: Icon(Icons.electric_bolt),
           label: 'Rutinas',
         ),
       ],
@@ -44,7 +44,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             context.goNamed('RoutineScreen');
             break;
           case 3:
-            context.goNamed('RoutineScreen');
+            context.goNamed('RoutinesScreen');
             break;
           default:
             break;

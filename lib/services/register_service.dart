@@ -49,6 +49,7 @@ class RegisterService {
       duration: routineData['duration'],
       exercises: exercises,
       aim: routineData['aim'],
+      
     );
   }
 }

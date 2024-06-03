@@ -94,7 +94,6 @@ class _RoutineScreenState extends State<RoutineScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             SizedBox(height: 10),
             Text(
               'Ejercicios:',
