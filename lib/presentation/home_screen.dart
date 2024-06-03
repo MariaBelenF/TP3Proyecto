@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cine_practica/core/entities/TypeOfTraining.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
@@ -16,8 +18,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final Usuario? currentUser = userManager.getLoggedUser();
-    TypeOfTraining tr = currentUser?.training ?? TypeOfTraining.Running;
-
+    TypeOfTraining? tr = currentUser!.training;
     if (currentUser == null || currentUser.currentRoutine == null) {
       return Scaffold(
         appBar: AppBar(
@@ -48,7 +49,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Mi plan de entrenamiento', style: TextStyle(fontSize: 20),),
-            Text('${tr.name}'),
+            Text('${tr?.name}'),
             SizedBox(height: 10),
             Container(
               width: MediaQuery.of(context).size.width, 

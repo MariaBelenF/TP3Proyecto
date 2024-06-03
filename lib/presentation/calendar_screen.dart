@@ -1,3 +1,4 @@
+import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/core/entities/UserManager.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,29 +13,19 @@ class CalendarScreen extends StatefulWidget {
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
 }
+ 
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  late DateTime _selectedDay;
-  late CalendarFormat _calendarFormat;
-  late Map<DateTime, List<dynamic>> _events;
-  late ValueNotifier<List<dynamic>> _selectedEvents;
   UserManager manager = UserManager();
-  late DateTime _focusedDay;
+  late String routineTitle;
   late List<int> _routineDays;
   late Set<DateTime> _exerciseDays;
-  late String routineTitle;
+  late Usuario loggedUser;
 
   @override
   void initState() {
     super.initState();
-    _selectedDay = DateTime.now();
-    _calendarFormat = CalendarFormat.month;
-    _focusedDay = DateTime.now();
-    _events = {};
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay));
-    _exerciseDays = {};
-
-    final loggedUser = manager.getLoggedUser();
+    loggedUser = manager.getLoggedUser()!;
     if (loggedUser != null && loggedUser.currentRoutine != null) {
       routineTitle = loggedUser.currentRoutine!.title;
       _routineDays = List<int>.generate(loggedUser.currentRoutine!.duration, (i) => i + 1);
@@ -44,151 +35,87 @@ class _CalendarScreenState extends State<CalendarScreen> {
       _routineDays = [];
     }
   }
-
-  List<dynamic> _getEventsForDay(DateTime day) {
-    return _events[day] ?? [];
+  // Función para mostrar el diálogo al hacer clic en un día del calendario
+  void _showConfirmationDialog(DateTime selectedDay) {
+    bool isDayDone = loggedUser.currentRoutine!.daysDone.contains(selectedDay);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+         String texto = '';
+        if(isDayDone){
+          texto = 'Este día (${selectedDay.day}/${selectedDay.month}) entrenaste! Deseas eliminar el registro?';
+        }else{
+           texto = '¿Entrenaste el ${selectedDay.day}/${selectedDay.month}?';
+        }
+        return AlertDialog(
+          title: Text('Confirmar entrenamiento'),
+          content: Text(texto),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  String texto = "";
+                  if(!isDayDone){
+                    loggedUser.currentRoutine!.addDayDone(selectedDay);
+                  }
+                  else{
+                     loggedUser.currentRoutine!.removeDayDone(selectedDay);
+                  }
+                  
+                });
+                Navigator.pop(context);
+              },
+              child: Text('Si'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  void _toggleExerciseDay(DateTime day) {
-    setState(() {
-      final loggedUser = manager.getLoggedUser();
-      if (_exerciseDays.contains(day)) {
-        _exerciseDays.remove(day);
-        loggedUser?.currentRoutine?.removeDayDone(day);
-      } else {
-        _exerciseDays.add(day);
-        loggedUser?.currentRoutine?.addDayDone(day);
-      }
-    });
+  // Función para construir el calendario
+  Widget _buildCalendar() {
+    return TableCalendar(
+      firstDay: DateTime.utc(2022, 1, 1),
+      lastDay: DateTime.utc(2030, 12, 31),
+      focusedDay: DateTime.now(),
+      calendarFormat: CalendarFormat.month,
+      selectedDayPredicate: (day) => loggedUser.currentRoutine!.daysDone.contains(day),
+      onDaySelected: (selectedDay, focusedDay) {
+        _showConfirmationDialog(selectedDay);
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 1),
+       bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 1),
       appBar: AppBar(
-        title: Text('Calendario'),
+        title: Text('Progreso'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.person),
-            onPressed: () {
-              context.pushNamed(ProfileScreen.name);
-            },
-          ),
-        ],
+        IconButton(
+          icon: Icon(Icons.person),
+          onPressed: () {
+            context.pushNamed(ProfileScreen.name);
+          },
+        ),
+      ],
       ),
-      body: Column(
-         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TableCalendar(
-            firstDay: DateTime.utc(2022, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-                _selectedEvents.value = _getEventsForDay(selectedDay);
-              });
-            },
-            eventLoader: _getEventsForDay,
-            calendarBuilders: CalendarBuilders(
-              defaultBuilder: (context, day, focusedDay) {
-                if (_exerciseDays.contains(day)) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text(
-                        '${day.day}',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  );
-                }
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('Rutina en proceso',
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              )
-            ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              routineTitle,
-              style: TextStyle(
-                fontSize: 17,
-                
-              ),
-            ),
-          ),
-          Wrap(
-            spacing: 10.0,
-            children: _routineDays.map((day) {
-              return GestureDetector(
-                onTap: () {
-                  _toggleExerciseDay(DateTime(
-                    _selectedDay.year,
-                    _selectedDay.month,
-                    day,
-                  ));
-                },
-                child: CircleAvatar(
-                  backgroundColor: _exerciseDays.contains(DateTime(
-                    _selectedDay.year,
-                    _selectedDay.month,
-                    day,
-                  ))
-                      ? Color.fromARGB(255, 41, 42, 92)
-                      : Color.fromARGB(255, 53, 9, 43),
-                  child: Text(
-                    day.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Rutinas finalizadas',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Expanded(
-            child: ValueListenableBuilder<List<dynamic>>(
-              valueListenable: _selectedEvents,
-              builder: (context, events, _) {
-                return ListView.builder(
-                  itemCount: events.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(events[index].toString()),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Text('Historial de entrenamiento', style: TextStyle( fontSize: 25)),
+            _buildCalendar(),
+          ],),
+      )
     );
   }
 }
