@@ -38,6 +38,15 @@ class _RoutinesScreenState extends State<RoutinesScreen> {
       aim: 0,
       image: 'assets/resistencia.png',
     ),
+    Routine(
+      title: 'Resistencia Avanzada',
+      description:
+          'Rutina diseñada para corredores con experiencia que buscan llevar su resistencia al siguiente nivel. desafía los límites físicos y mentales, preparando a los corredores para competencias de larga distancia y ultramaratones. Se recomienda un alto nivel de condición física previa y supervisión profesional para realizar esta rutina de manera segura y efectiva.',
+      duration: 10,
+      exercises: List.empty(),
+      aim: 0,
+      image: 'assets/resistenciaAvanzada.png',
+    ),
   ];
 
   void _showRoutineDetails(BuildContext context, Routine rutina) {

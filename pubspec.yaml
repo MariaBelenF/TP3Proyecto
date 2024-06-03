@@ -33,6 +33,7 @@ flutter:
     - assets/background2.png
     - assets/running1.png
     - assets/resistencia.png
+    - assets/resistenciaAvanzada.png
 
 fonts:
   - family: Philosopher
