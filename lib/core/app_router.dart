@@ -4,6 +4,7 @@ import 'package:cine_practica/presentation/calendar_screen.dart';
 
 import 'package:cine_practica/presentation/home_screen.dart';
 import 'package:cine_practica/presentation/login_screen.dart';
+import 'package:cine_practica/presentation/profile_info_screen.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:cine_practica/presentation/initial_screen.dart';
 import 'package:cine_practica/presentation/register_screen.dart';
@@ -51,5 +52,9 @@ final appRouter = GoRouter(routes: [
   GoRoute(
       path: '/routines',
       builder: (context, state) => RoutinesScreen(),
-      name: RoutinesScreen.name)
+      name: RoutinesScreen.name),
+  GoRoute(
+      path: '/profile-info',
+      builder: (context, state) => ProfileInfoScreen(),
+      name: ProfileInfoScreen.name)
 ]);

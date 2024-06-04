@@ -72,6 +72,9 @@ class Usuario {
     return currentRoutine;
   }
 
+String getEmail(){
+  return this.mail;
+}
   void setRoutine(Routine rutina){
     currentRoutine = rutina;
   }

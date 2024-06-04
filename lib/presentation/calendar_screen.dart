@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/core/entities/UserManager.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
@@ -205,27 +207,53 @@ Widget build(BuildContext context) {
       ],
     ),
     body: Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: EdgeInsets.fromLTRB(1.0, 15, 1, 18),
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                Text(
-                'Historial de entrenamiento',
-                style: TextStyle(fontSize: 25),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  color: Colors.white.withOpacity(0.4),
+                ),
+                padding: EdgeInsets.fromLTRB(30, 0, 20,0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Historial',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    
+                    IconButton(
+                      onPressed: _informationDialog,
+                      icon: Icon(Icons.help_outlined),
+                    ),
+                  ],
+                ),
               ),
-                IconButton(
-                onPressed: _informationDialog,
-                icon: Icon(Icons.help_outlined),
-          ),
             ],
           ),
-          
           _buildCalendar(),
-          Text(
-            'Entrenamientos realizados',
-            style: TextStyle(fontSize: 20),
-          ),
+          SizedBox(height: 20),
+           Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(0),
+                color: Colors.white.withOpacity(0.4),
+              ),
+              padding: EdgeInsets.all(5),
+              child: Text(
+                'Sesiones de entrenamiento',
+                style: TextStyle(fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+         
           Expanded(
             child: ListView.builder(
               itemCount: loggedUser.currentRoutine!.daysDone.length,
@@ -244,5 +272,4 @@ Widget build(BuildContext context) {
     ),
   );
 }
-
 }
