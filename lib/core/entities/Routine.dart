@@ -31,6 +31,7 @@ class Routine {
 
   void addDayDone(DateTime day) {
     daysDone.add(day);
+    daysDone.sort((a, b) => a.compareTo(b));
   }
 
   void removeDayDone(DateTime day) {

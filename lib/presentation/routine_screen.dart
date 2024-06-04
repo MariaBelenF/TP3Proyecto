@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cine_practica/core/entities/Exercise.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
@@ -17,6 +17,7 @@ class RoutineScreen extends StatefulWidget {
 
 class _RoutineScreenState extends State<RoutineScreen> {
   final UserManager manager = UserManager();
+  
 
   late List<Exercise> exercises;
   Map<int, bool> checkedStatus = {};
@@ -39,12 +40,11 @@ class _RoutineScreenState extends State<RoutineScreen> {
   }
 
   void _showExerciseDetails(BuildContext context, Exercise exercise) {
-    
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Center( child: Text(exercise.title)) ,
+            title: Center(child: Text(exercise.title)),
             content: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -70,6 +70,15 @@ class _RoutineScreenState extends State<RoutineScreen> {
         });
   }
 
+
+   void _resetExercises() {
+    setState(() {
+      for (var exercise in exercises) {
+        exercise.done = false;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Usuario? currentUser = manager.getLoggedUser();
@@ -77,8 +86,9 @@ class _RoutineScreenState extends State<RoutineScreen> {
     final routineTitle =
         user?.getRoutine()?.getTitle() ?? 'Sin rutina asignada';
 
-    return Scaffold( appBar: AppBar(
-        title: Text('Entrenamiento - ${routineTitle}'), 
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Entrenamiento - ${routineTitle}'),
         actions: [
           IconButton(
             icon: Icon(Icons.person),
@@ -95,9 +105,23 @@ class _RoutineScreenState extends State<RoutineScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 10),
-            Text(
-              'Ejercicios:',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+            Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 5,
+                      offset: Offset(0, 2)),
+                ],
+                color: Colors.white.withOpacity(0.9),
+              ),
+              padding: EdgeInsets.all(10),
+              child: Text(
+                'Ejercicios:',
+                style: TextStyle(fontSize: 18),
+              ),
             ),
             Expanded(
               child: ListView.builder(
@@ -105,10 +129,10 @@ class _RoutineScreenState extends State<RoutineScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   Exercise exercise = exercises[index];
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0), 
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: ListTile(
-                       onTap: () {
-                         _showExerciseDetails(context, exercise);
+                      onTap: () {
+                        _showExerciseDetails(context, exercise);
                       },
                       leading: Image.network(
                         exercise.imageLink,
@@ -132,7 +156,11 @@ class _RoutineScreenState extends State<RoutineScreen> {
             ),
             SizedBox(height: 10),
             ElevatedButton(
-                onPressed: () {}, child: const Text('Finalizar entrenamiento'))
+                onPressed: () {
+                  DateTime dia = DateTime.now();
+                  currentUser!.currentRoutine!.addDayDone(dia);
+                    _resetExercises();
+                }, child: const Text('Finalizar entrenamiento'))
           ],
         ),
       ),
