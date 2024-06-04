@@ -1,11 +1,13 @@
 import 'package:cine_practica/core/entities/User.dart';
 import '../../services/auth_service.dart';
+import '../../services/update_service.dart';
 import '../../services/register_service.dart';
 import '../entities/Routine.dart';
 
 class UserManager {
-  static final RegisterService registerService = RegisterService();
-  static AuthService logger = AuthService(UserManager());
+  static RegisterService registerService = RegisterService();
+  static UpdateService updateService = UpdateService();
+  static AuthService authService = AuthService(UserManager());
   static List<Usuario> _usuarios = [];
   static Usuario? _loggedUser;
   
@@ -45,5 +47,13 @@ class UserManager {
   }
 
   var login = (String mail, String password) async =>
-      {logger.loginAndSetUser(mail, password)};
+      {authService.loginAndSetUser(mail, password)};
+
+  Future<void> updateLoggedUser() async {
+    if (_loggedUser != null) {
+      await updateService.updateUser(_loggedUser!);
+    } else {
+      throw Exception('No user is currently logged in');
+    }
+  }
 }

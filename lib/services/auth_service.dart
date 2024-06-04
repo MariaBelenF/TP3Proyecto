@@ -6,47 +6,6 @@ import '../core/entities/TypeOfTraining.dart';
 import '../core/entities/Routine.dart';
 import '../core/entities/Exercise.dart';
 
-// class AuthService {
-//   final UserManager _userManager;
-
-//   AuthService(this._userManager);
-
-//   final String baseUrl = 'https://665887705c3617052648e130.mockapi.io/api';
-
-//   Future<void> loginAndSetUser(String email, String password) async {
-//     final response = await http.get(
-//       Uri.parse('$baseUrl/users'),
-//       headers: {'Content-Type': 'application/json'},
-//     );
-    
-//     if (response.statusCode == 200) {
-//       final List<dynamic> users = jsonDecode(response.body);
-//       for (var userData in users) {
-//         if (userData['mail'] == email && userData['password'] == password) {
-//           final userOK = Usuario(
-//             mail: userData['mail'],
-//             userName: userData['userName'],
-//             password: userData['password'],
-//             age: userData['age'],
-//             training: userData['training'] != null
-//                 ? TypeOfTraining.values[0]
-//                 : null,
-//             currentRoutine: userData['currentRoutine'],
-//             daysDone: userData['daysDone'],
-//           );
-
-//           _userManager.setLoggedUser(userOK);
-//           _userManager.agregarUsuario(userOK);
-//           return;
-//         }
-//       }
-//       throw Exception('User not found. Users: $users');
-//     } else {
-//       throw Exception('Failed to load users');
-//     }
-//   }
-// }
-
 class AuthService {
   final UserManager _userManager;
 
@@ -91,6 +50,7 @@ class AuthService {
             );
 
             final userOK = Usuario(
+              id: userData['id'],
               mail: userData['mail'],
               userName: userData['userName'],
               password: userData['password'],

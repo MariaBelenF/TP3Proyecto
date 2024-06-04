@@ -46,6 +46,7 @@ import 'package:cine_practica/core/entities/Routine.dart';
 import 'package:cine_practica/core/entities/TypeOfTraining.dart';
 
 class Usuario {
+  final String? id;
   final String userName;
   final String password;
   final String mail;
@@ -60,6 +61,7 @@ class Usuario {
       required this.age,
       required this.training,
       required this.currentRoutine,
+      this.id,
       this.daysDone});
 
 
