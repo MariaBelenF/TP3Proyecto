@@ -56,4 +56,5 @@ class UserManager {
       throw Exception('No user is currently logged in');
     }
   }
+
 }

@@ -5,6 +5,7 @@ import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/presentation/calendar_screen.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:cine_practica/presentation/routine_screen.dart';
+import 'package:cine_practica/presentation/routines_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cine_practica/presentation/bottom_navigation_bar.dart';
@@ -20,7 +21,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Usuario? currentUser = userManager.getLoggedUser();
-    List<DateTime> diasEntrenados = currentUser!.getRoutine()!.daysDone;
+    List<DateTime> diasEntrenados = currentUser!.timesDone;
     TypeOfTraining? tr = currentUser!.training;
 
     String _getDayName(int day) {
@@ -51,25 +52,25 @@ class HomeScreen extends StatelessWidget {
       return es_day;
     }
 
-   Widget lastTrainingDayText;
-if (diasEntrenados.isNotEmpty) {
-  lastTrainingDayText =  Row(
-      children: [
-        Text('${_getDayName(diasEntrenados.last.weekday)}, ${DateFormat('dd/MM').format(diasEntrenados.last)}'),
-      ],
-  );
-
-} else {
-  lastTrainingDayText =  Row(
-      children: [
-        IconButton(
-          onPressed: () => context.goNamed(CalendarScreen.name),
-          icon: Icon(Icons.alarm_rounded),
-        ),
-        Text('No hay entrenamientos registrados'),
-      ],
-  );
-}
+    Widget lastTrainingDayText;
+    if (diasEntrenados.isNotEmpty) {
+      lastTrainingDayText = Row(
+        children: [
+          Text(
+              '${_getDayName(diasEntrenados.last.weekday)}, ${DateFormat('dd/MM').format(diasEntrenados.last)}'),
+        ],
+      );
+    } else {
+      lastTrainingDayText = Row(
+        children: [
+          IconButton(
+            onPressed: () => context.goNamed(CalendarScreen.name),
+            icon: Icon(Icons.alarm_rounded),
+          ),
+          Text('No hay entrenamientos registrados'),
+        ],
+      );
+    }
 
     if (currentUser == null || currentUser.currentRoutine == null) {
       return Scaffold(
@@ -130,7 +131,12 @@ if (diasEntrenados.isNotEmpty) {
             SizedBox(height: 7),
             GestureDetector(
               onTap: () {
-                context.pushNamed(RoutineScreen.name);
+                if (currentUser.timesDone.length ==
+                    currentUser.getRoutine()!.duration) {
+                  context.pushNamed(RoutinesScreen.name);
+                } else {
+                  context.pushNamed(RoutineScreen.name);
+                }
               },
               child: Container(
                 alignment: Alignment.center,
@@ -151,13 +157,21 @@ if (diasEntrenados.isNotEmpty) {
                     IconButton(
                       icon: Icon(Icons.fitness_center_rounded),
                       onPressed: () {
-                        context.pushNamed(RoutineScreen.name);
+                        if (currentUser.timesDone.length ==
+                            currentUser.getRoutine()!.duration) {
+                          context.pushNamed(RoutinesScreen.name);
+                        } else {
+                          context.pushNamed(RoutineScreen.name);
+                        }
                       },
                     ),
                     SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'Comience su sesión de entrenamiento y siga progresando hacia su meta',
+                        currentUser.timesDone.length ==
+                                currentUser.getRoutine()!.duration
+                            ? '¡Felicidades! Has completado tu rutina. Haz clic aquí para dirigirte a la sección de rutinas y comenzar una nueva'
+                            : 'Comience su sesión de entrenamiento y siga progresando hacia su meta',
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -173,27 +187,23 @@ if (diasEntrenados.isNotEmpty) {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                
-                //color: Colors.white.withOpacity(0.7),
               ),
               padding: EdgeInsets.all(5),
               child: Text(
                 'Mi plan de entrenamiento: ${tr?.name}',
                 style: TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 10), 
+            SizedBox(height: 10),
             Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(7),
-               
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,7 +217,10 @@ if (diasEntrenados.isNotEmpty) {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Días completados: ${routine.daysDone.length} / ${routine.duration}',
+                    currentUser.timesDone.length ==
+                            currentUser.getRoutine()!.duration
+                        ? 'Rutina finalizada'
+                        : 'Días entrenados: ${currentUser.timesDone.length} / ${routine.duration}',
                     style: TextStyle(fontSize: 13, color: Colors.white),
                   ),
                 ],
@@ -224,14 +237,12 @@ if (diasEntrenados.isNotEmpty) {
                 borderRadius: BorderRadius.circular(7),
               ),
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   context.pushNamed(CalendarScreen.name);
                 },
-               child: Column(
-                children: [
-                 lastTrainingDayText
-                ],
-               ),
+                child: Column(
+                  children: [lastTrainingDayText],
+                ),
               ),
             )
           ],

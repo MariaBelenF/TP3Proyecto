@@ -7,7 +7,7 @@ class Routine {
   final List<Exercise> exercises;
   final int aim;
   final String? image;
-  List<DateTime> daysDone;
+  
    //esto es de user
 
   Routine({
@@ -17,8 +17,8 @@ class Routine {
     required this.exercises,
     required this.aim,
     this.image,
-    List<DateTime>? daysDone,
-  }) : this.daysDone = daysDone ?? [];
+    
+  });
 
   int getDuration() {
     return this.duration;
@@ -28,15 +28,6 @@ class Routine {
     return title;
   }
 
-
-  void addDayDone(DateTime day) {
-    daysDone.add(day);
-    daysDone.sort((a, b) => a.compareTo(b));
-  }
-
-  void removeDayDone(DateTime day) {
-    daysDone.remove(day);
-  }
 
 }
 

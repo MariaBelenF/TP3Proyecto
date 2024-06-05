@@ -61,7 +61,7 @@ class AuthService {
                       orElse: () => TypeOfTraining.values[0])
                   : null,
               currentRoutine: routine,
-              daysDone: userData['daysDone'],
+              //daysDone: userData['daysDone'],
             );
 
             _userManager.setLoggedUser(userOK);

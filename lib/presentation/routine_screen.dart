@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cine_practica/core/entities/Exercise.dart';
+import 'package:cine_practica/presentation/custom_alert_dialog.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cine_practica/core/entities/User.dart';
@@ -17,7 +18,6 @@ class RoutineScreen extends StatefulWidget {
 
 class _RoutineScreenState extends State<RoutineScreen> {
   final UserManager manager = UserManager();
-  
 
   late List<Exercise> exercises;
   Map<int, bool> checkedStatus = {};
@@ -26,6 +26,12 @@ class _RoutineScreenState extends State<RoutineScreen> {
   void initState() {
     super.initState();
     final user = manager.getLoggedUser();
+
+     if (user!.timesDone.length == user.getRoutine()!.duration) {
+      Future.delayed(Duration.zero, () {
+        _showCustomDialog(context);
+      });
+    }
     exercises = user?.getRoutine()?.exercises ?? [];
     // Inicializar checkedStatus
     for (var i = 0; i < exercises.length; i++) {
@@ -37,6 +43,26 @@ class _RoutineScreenState extends State<RoutineScreen> {
     setState(() {
       exercises[index].toggleDone();
     });
+  }
+void _showCustomDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomAlertDialog();
+      },
+    );
+  }
+  void _confirmationDetail(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Entrenamiento registrado'),
+            content: Column(children: [TextButton(onPressed: (){
+              Navigator.of(context).pop();
+            }, child: Text('Cerrar'))],),
+          );
+        });
   }
 
   void _showExerciseDetails(BuildContext context, Exercise exercise) {
@@ -70,8 +96,7 @@ class _RoutineScreenState extends State<RoutineScreen> {
         });
   }
 
-
-   void _resetExercises() {
+  void _resetExercises() {
     setState(() {
       for (var exercise in exercises) {
         exercise.done = false;
@@ -88,7 +113,7 @@ class _RoutineScreenState extends State<RoutineScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Entrenamiento - ${routineTitle}'),
+        title: Text('${routineTitle}'),
         actions: [
           IconButton(
             icon: Icon(Icons.person),
@@ -157,10 +182,16 @@ class _RoutineScreenState extends State<RoutineScreen> {
             SizedBox(height: 10),
             ElevatedButton(
                 onPressed: () {
-                  DateTime dia = DateTime.now();
-                  currentUser!.currentRoutine!.addDayDone(dia);
-                    _resetExercises();
-                }, child: const Text('Finalizar entrenamiento'))
+                  if(user!.timesDone.length == user.getRoutine()!.duration){
+                    _showCustomDialog(context);
+                  }else{
+                     DateTime dia = DateTime.now();
+                  currentUser!.addDayDone(dia);
+                  _resetExercises();
+                    _confirmationDetail(context);
+                  }
+                },
+                child: const Text('Finalizar entrenamiento'))
           ],
         ),
       ),

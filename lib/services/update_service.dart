@@ -16,7 +16,7 @@ class UpdateService {
         'age': usuario.age,
         'training': usuario.training?.name,
         'idCurrentRoutine': usuario.training?.index,
-        'daysDone': usuario.daysDone,
+        // 'daysDone': usuario.daysDone,
       }),
     );
 

@@ -24,7 +24,7 @@ class _RoutinesScreenState extends State<RoutinesScreen> {
       title: 'Comienzos de running',
       description:
           'Rutina diseñada para principiantes. Incluye ejercicios de calentamiento, caminatas y trotes suaves para desarrollar resistencia y mejorar la técnica de carrera. Ideal para quienes desean comenzar a correr de manera gradual y segura',
-      duration: 10,
+      duration: 5,
       exercises: List.empty(),
       aim: 1,
       image: 'assets/running1.png',

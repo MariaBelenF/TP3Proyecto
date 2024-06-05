@@ -53,8 +53,7 @@ class Usuario {
   final int age;
   final TypeOfTraining? training;
   Routine? currentRoutine;
-  final int? daysDone; //dias de rutina hechos
-  final List<DateTime>? timesDone; 
+  final List<DateTime> timesDone; 
   Usuario(
       {required this.mail,
       required this.userName,
@@ -63,8 +62,8 @@ class Usuario {
       required this.training,
       required this.currentRoutine,
       this.id,
-      this.daysDone,
-      this.timesDone});
+      List<DateTime>? timesDone,
+     }) : this.timesDone = timesDone ?? [];
 
 
   @override
@@ -81,6 +80,19 @@ String getEmail(){
 }
   void setRoutine(Routine rutina){
     currentRoutine = rutina;
+     timesDone.clear();
   }
+
+  
+  void addDayDone(DateTime day) {
+    timesDone.add(day);
+    timesDone.sort((a, b) => a.compareTo(b));
+  }
+
+
+  void removeDayDone(DateTime day) {
+    timesDone.remove(day);
+  }
+
 }
 
