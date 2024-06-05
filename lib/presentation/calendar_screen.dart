@@ -11,6 +11,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:cine_practica/presentation/bottom_navigation_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:date_format/date_format.dart';
+import '../core/entities/UserManager.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({Key? key}) : super(key: key);
@@ -111,6 +112,7 @@ void _showCustomDialog(BuildContext context) {
                             }
                             loggedUser.timesDone.sort((a, b) => a.compareTo(b));
                           });
+                          manager.updateLoggedUser();
                           Navigator.pop(context);
                         },
                         child: Text('Sí'),

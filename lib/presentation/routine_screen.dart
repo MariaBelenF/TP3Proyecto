@@ -187,6 +187,7 @@ void _showCustomDialog(BuildContext context) {
                   }else{
                      DateTime dia = DateTime.now();
                   currentUser!.addDayDone(dia);
+                  manager.updateLoggedUser;
                   _resetExercises();
                     _confirmationDetail(context);
                   }

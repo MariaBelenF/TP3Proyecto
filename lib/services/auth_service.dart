@@ -61,7 +61,10 @@ class AuthService {
                       orElse: () => TypeOfTraining.values[0])
                   : null,
               currentRoutine: routine,
-              //daysDone: userData['daysDone'],
+              // timesDone: userData['timesDone'],
+                timesDone: userData['timesDone'] != null
+                  ? (userData['timesDone'] as List).map((time) => DateTime.parse(time)).toList()
+                  : [],
             );
 
             _userManager.setLoggedUser(userOK);

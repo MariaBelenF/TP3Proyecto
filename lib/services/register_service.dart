@@ -18,7 +18,7 @@ class RegisterService {
         'age': usuario.age,
         'training': usuario.training?.name,
         'idCurrentRoutine': trainingId,
-        'daysDone': 0,
+        'timesDone': usuario.timesDone,
       }),
     );
 

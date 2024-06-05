@@ -4,6 +4,7 @@ import '../../services/update_service.dart';
 import '../../services/register_service.dart';
 import '../entities/Routine.dart';
 
+
 class UserManager {
   static RegisterService registerService = RegisterService();
   static UpdateService updateService = UpdateService();
