@@ -54,6 +54,7 @@ class Usuario {
   final TypeOfTraining? training;
   Routine? currentRoutine;
   final int? daysDone; //dias de rutina hechos
+  final List<DateTime>? timesDone; 
   Usuario(
       {required this.mail,
       required this.userName,
@@ -62,7 +63,8 @@ class Usuario {
       required this.training,
       required this.currentRoutine,
       this.id,
-      this.daysDone});
+      this.daysDone,
+      this.timesDone});
 
 
   @override
