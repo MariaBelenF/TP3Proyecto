@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:cine_practica/core/entities/Routine.dart';
+import 'package:cine_practica/core/entities/TypeOfTraining.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/core/entities/UserManager.dart';
 import 'package:cine_practica/presentation/bottom_navigation_bar.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../services/routines_getter_service.dart';
 
 class RoutinesScreen extends StatefulWidget {
   static const String name = 'RoutinesScreen';
@@ -19,35 +21,16 @@ class RoutinesScreen extends StatefulWidget {
 class _RoutinesScreenState extends State<RoutinesScreen> {
   UserManager manager = UserManager();
   late Usuario? loggedUser = manager.getLoggedUser();
-  List<Routine> rutinas = [
-    Routine(
-      title: 'Comienzos de running',
-      description:
-          'Rutina diseñada para principiantes. Incluye ejercicios de calentamiento, caminatas y trotes suaves para desarrollar resistencia y mejorar la técnica de carrera. Ideal para quienes desean comenzar a correr de manera gradual y segura',
-      duration: 5,
-      exercises: List.empty(),
-      aim: 1,
-      image: 'assets/running1.png',
-    ),
-    Routine(
-      title: 'Mejorar la Resistencia',
-      description:
-          'Rutina enfocada en mejorar la resistencia para carreras. Incluye entrenamientos de intervalos, carreras a ritmo constante y sesiones de resistencia muscular. Ideal para corredores que desean aumentar su resistencia y rendimiento en competencias de larga distancia',
-      duration: 10,
-      exercises: List.empty(),
-      aim: 0,
-      image: 'assets/resistencia.png',
-    ),
-    Routine(
-      title: 'Resistencia Avanzada',
-      description:
-          'Rutina diseñada para corredores con experiencia que buscan llevar su resistencia al siguiente nivel. desafía los límites físicos y mentales, preparando a los corredores para competencias de larga distancia y ultramaratones. Se recomienda un alto nivel de condición física previa y supervisión profesional para realizar esta rutina de manera segura y efectiva.',
-      duration: 10,
-      exercises: List.empty(),
-      aim: 0,
-      image: 'assets/resistenciaAvanzada.png',
-    ),
-  ];
+  final RoutinesGetterService getter = RoutinesGetterService();  
+  // late List<Routine> rutinas = getter.getRoutines();
+
+  
+   List<Routine>? rutinas=[
+    Routine(title: 'Rutina 1', description: 'Descripcion', duration: 11, exercises: [], aim: 11, 
+    typeOfTraining: TypeOfTraining.GainWeight, id: 1)
+   ];
+  
+
 
   void _showRoutineDetails(BuildContext context, Routine rutina) {
     showDialog(
@@ -65,7 +48,7 @@ class _RoutinesScreenState extends State<RoutinesScreen> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); 
+                      Navigator.of(context).pop();
                     },
                     child: Text('Cerrar'),
                   ),
@@ -74,7 +57,7 @@ class _RoutinesScreenState extends State<RoutinesScreen> {
                     onPressed: () {
                       if (loggedUser != null) {
                         loggedUser!.setRoutine(rutina);
-                        Navigator.of(context).pop(); 
+                        Navigator.of(context).pop();
                       }
                     },
                     child: Text('Comenzar rutina'),
@@ -90,7 +73,7 @@ class _RoutinesScreenState extends State<RoutinesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Image path: ${rutinas[0].image}');
+    // print('${getter.getRoutines()}');
     return Scaffold(
       appBar: AppBar(
         title: Text('Rutinas'),
@@ -133,9 +116,9 @@ class _RoutinesScreenState extends State<RoutinesScreen> {
             SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
-                itemCount: rutinas.length,
+                itemCount: rutinas?.length,
                 itemBuilder: (BuildContext context, int index) {
-                  Routine rutina = rutinas[index];
+                  Routine rutina = rutinas![index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: GestureDetector(
@@ -152,7 +135,7 @@ class _RoutinesScreenState extends State<RoutinesScreen> {
                               offset: Offset(0, 2),
                             ),
                           ],
-                          color: Colors.white.withOpacity(0.6), 
+                          color: Colors.white.withOpacity(0.6),
                         ),
                         child: Row(
                           children: [

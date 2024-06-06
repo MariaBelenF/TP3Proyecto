@@ -1,4 +1,5 @@
 import 'package:cine_practica/core/entities/Exercise.dart';
+import 'package:cine_practica/core/entities/TypeOfTraining.dart';
 
 class Routine {
   final String title;
@@ -7,8 +8,10 @@ class Routine {
   final List<Exercise> exercises;
   final int aim;
   final String? image;
-  
-   //esto es de user
+  final TypeOfTraining typeOfTraining;
+  final int? id;
+
+  //esto es de user
 
   Routine({
     required this.title,
@@ -16,8 +19,9 @@ class Routine {
     required this.duration,
     required this.exercises,
     required this.aim,
+    required this.typeOfTraining,
     this.image,
-    
+    this.id,
   });
 
   int getDuration() {
@@ -27,7 +31,4 @@ class Routine {
   String getTitle() {
     return title;
   }
-
-
 }
-

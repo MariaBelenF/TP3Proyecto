@@ -31,7 +31,7 @@ class AuthService {
 
           if (routineResponse.statusCode == 200) {
             final routineData = jsonDecode(routineResponse.body);
-            
+
             List<Exercise> exercises = (routineData['exercises'] as List)
                 .map((exerciseData) => Exercise(
                       title: exerciseData['title'],
@@ -46,7 +46,7 @@ class AuthService {
               duration: routineData['duration'],
               exercises: exercises,
               aim: routineData['aim'],
-              
+              typeOfTraining: TypeOfTraining.values[routineId]
             );
 
             final userOK = Usuario(
@@ -61,9 +61,10 @@ class AuthService {
                       orElse: () => TypeOfTraining.values[0])
                   : null,
               currentRoutine: routine,
-              // timesDone: userData['timesDone'],
-                timesDone: userData['timesDone'] != null
-                  ? (userData['timesDone'] as List).map((time) => DateTime.parse(time)).toList()
+              timesDone: userData['timesDone'] != null
+                  ? (userData['timesDone'] as List)
+                      .map((time) => DateTime.parse(time))
+                      .toList()
                   : [],
             );
 
@@ -81,4 +82,3 @@ class AuthService {
     }
   }
 }
-
