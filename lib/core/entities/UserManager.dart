@@ -1,3 +1,4 @@
+import 'package:cine_practica/core/entities/TypeOfTraining.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import '../../services/auth_service.dart';
 import '../../services/update_service.dart';
@@ -77,6 +78,18 @@ class UserManager {
     void resetExercises() {
      _loggedUser!.getRoutine()!.resetExercises();
     
+  }
+
+void clearUserListTimesDone(){
+  _loggedUser!.clearTimesDone();
+}
+  void updateUserInfo(String name, String email, int Age, String password, TypeOfTraining training){
+      _loggedUser!.setUserName(name);
+      _loggedUser!.setEmail(email);
+      _loggedUser!.setAge(Age);
+      _loggedUser!.setTraining(training);
+      _loggedUser!.clearTimesDone();
+      updateLoggedUser();
   }
 
 }

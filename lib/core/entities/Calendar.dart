@@ -14,15 +14,26 @@ class Calendar {
 
   String getDialogTitle(DateTime selectedDay) {
     String texto = '';
-    if (us_manager.getLoggedUser()!.timesDone.contains(selectedDay)) {
+    if (isDayDone(selectedDay)) {
       texto =
-          'Este día (${selectedDay.day}/${selectedDay.month}) entrenaste! Deseas eliminar el registro?';
+          'Este día (${getDayName(selectedDay.weekday)} ${selectedDay.day}) entrenaste! Deseas eliminar el registro?';
     } else {
-      texto = '¿Entrenaste el ${selectedDay.day}/${selectedDay.month}?';
+      texto = '¿Entrenaste el ${getDayName(selectedDay.weekday)} ${selectedDay.day}?';
     }
     return texto;
   }
 
+  void addOrRemoveDayDone(bool dayDone, DateTime selectedDay) {
+    if (!dayDone) {
+      us_manager.getLoggedUser()!.addDayDone(selectedDay);
+    } else {
+      us_manager.getLoggedUser()!.removeDayDone(selectedDay);
+    }
+  }
+
+  bool isDayDone(DateTime selectedDay){
+    return us_manager.getLoggedUser()!.timesDone.contains(selectedDay);
+  }
   String getDialogContent() {
     String text = "";
     if (isRoutineFinished()) {

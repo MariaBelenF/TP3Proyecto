@@ -3,11 +3,11 @@ import 'package:cine_practica/core/entities/TypeOfTraining.dart';
 
 class Usuario {
   final String? id;
-  final String userName;
-  final String password;
-  final String mail;
-  final int age;
-  final TypeOfTraining? training;
+  String userName;
+  String password;
+  String mail;
+  int age;
+  TypeOfTraining? training;
   Routine? currentRoutine;
   final List<DateTime> timesDone; 
   Usuario(
@@ -25,6 +25,10 @@ class Usuario {
   @override
   String toString() {
     return '$userName';
+  }
+
+  void clearTimesDone(){
+    this.timesDone.clear();
   }
 
   Routine? getRoutine() {
@@ -50,5 +54,24 @@ String getEmail(){
     timesDone.remove(day);
   }
 
+  int getAge(){
+    return this.age;
+  }
+
+  void setUserName(String name){
+    this.userName = name;
+  }
+
+  void setAge(int edad){
+    age = edad;
+  }
+
+  void setTraining(TypeOfTraining training){
+    this.training = training;
+  }
+
+  void setEmail(String email){
+    mail = email;
+  }
 }
 

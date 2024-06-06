@@ -24,41 +24,17 @@ class HomeScreen extends StatelessWidget {
     final Usuario? currentUser = userManager.getLoggedUser();
     List<DateTime> diasEntrenados = currentUser!.timesDone;
     TypeOfTraining? tr = currentUser!.training;
+    Calendar negocio = Calendar();
 
-    String _getDayName(int day) {
-      String es_day = "";
-      switch (day) {
-        case 1:
-          es_day = "Lunes";
-          break;
-        case 2:
-          es_day = "Martes";
-          break;
-        case 3:
-          es_day = "Miércoles";
-          break;
-        case 4:
-          es_day = "Jueves";
-          break;
-        case 5:
-          es_day = "Viernes";
-          break;
-        case 6:
-          es_day = "Sábado";
-          break;
-        case 7:
-          es_day = "Domingo";
-          break;
-      }
-      return es_day;
-    }
+
+    
 
     Widget lastTrainingDayText;
     if (diasEntrenados.isNotEmpty) {
       lastTrainingDayText = Row(
         children: [
           Text(
-              '${_getDayName(diasEntrenados.last.weekday)}, ${DateFormat('dd/MM').format(diasEntrenados.last)}'),
+              '${negocio.getDayName(diasEntrenados.last.weekday)}, ${DateFormat('dd/MM').format(diasEntrenados.last)}'),
         ],
       );
     } else {

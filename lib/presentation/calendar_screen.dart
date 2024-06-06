@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:cine_practica/core/entities/Calendar.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/core/entities/UserManager.dart';
@@ -30,8 +28,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   late Usuario loggedUser;
   Calendar negocio = Calendar();
 
-
-void _showCustomDialog(BuildContext context) {
+  void _showCustomDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -39,6 +36,7 @@ void _showCustomDialog(BuildContext context) {
       },
     );
   }
+
   @override
   void initState() {
     super.initState();
@@ -48,65 +46,63 @@ void _showCustomDialog(BuildContext context) {
         _showCustomDialog(context);
       });
     }
-    
+
     if (manager.getRoutine() != null) {
       _routineDays = manager.getRutineDays();
       _exerciseDays = manager.getExerciseDays();
       manager.ordenarLista();
-    } 
+    }
   }
 
   void _showConfirmationDialog(DateTime selectedDay) {
-    bool isDayDone = loggedUser.timesDone.contains(selectedDay);
+    bool isDayDone = negocio.isDayDone(selectedDay);
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        
         return AlertDialog(
           title: Text(negocio.getDialogContent()),
           content: Text(negocio.isRoutineFinished()
               ? 'Ya finalizaste esta rutina. Dirígete hacia Rutinas para comenzar otra'
               : negocio.getDialogTitle(selectedDay)),
-          actions:
-              negocio.isRoutineFinished()
-                  ? [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          context.pushNamed(RoutinesScreen.name);
-                        },
-                        child: Text('¡Vamos!'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('Cancelar'),
-                      ),
-                    ]
-                  : [
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            if (!isDayDone) {
-                              loggedUser.addDayDone(selectedDay);
-                            } else {
-                              loggedUser.removeDayDone(selectedDay);
-                            }
-                            manager.ordenarLista();
-                          });
-                          manager.updateLoggedUser();
-                          Navigator.pop(context);
-                        },
-                        child: Text('Sí'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('Cancelar'),
-                      ),
-                    ],
+          actions: negocio.isRoutineFinished()
+              ? [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      context.pushNamed(RoutinesScreen.name);
+                    },
+                    child: Text('¡Vamos!'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancelar'),
+                  ),
+                ]
+              : [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        if (isDayDone) {
+                          loggedUser.timesDone.removeWhere((day) => isSameDay(day, selectedDay));
+                        } else {
+                          loggedUser.timesDone.add(selectedDay);
+                        }
+                        manager.ordenarLista();
+                      });
+                      manager.updateLoggedUser();
+                      Navigator.pop(context);
+                    },
+                    child: Text('Sí'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancelar'),
+                  ),
+                ],
         );
       },
     );
@@ -118,31 +114,30 @@ void _showCustomDialog(BuildContext context) {
       lastDay: DateTime.utc(2030, 12, 31),
       focusedDay: DateTime.now(),
       calendarFormat: CalendarFormat.month,
-      selectedDayPredicate: (day) => loggedUser.timesDone.contains(day),
+      selectedDayPredicate: (day) => loggedUser.timesDone.any((d) => isSameDay(d, day)),
       onDaySelected: (selectedDay, focusedDay) {
         _showConfirmationDialog(selectedDay);
       },
     );
   }
 
- 
   void _informationDialog() {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                    'En esta sección vas a poder registrar todos tus entrenamientos en la fecha en la que los realizas clickeando el día en el calendario, para así mantener un registro de tu entrenamiento, progreso y compromiso')
-              ],
-            ),
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                  'En esta sección vas a poder registrar todos tus entrenamientos en la fecha en la que los realizas clickeando el día en el calendario, para así mantener un registro de tu entrenamiento, progreso y compromiso')
+            ],
+          ),
+        );
+      },
+    );
   }
- 
 
   @override
   Widget build(BuildContext context) {
@@ -225,4 +220,3 @@ void _showCustomDialog(BuildContext context) {
     );
   }
 }
-
