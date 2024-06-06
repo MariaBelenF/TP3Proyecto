@@ -28,6 +28,11 @@ class Routine {
     return title;
   }
 
+  void resetExercises() {
+      for (var exercise in exercises) {
+        exercise.done = false;
+      }
+  }
 
 }
 

@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_local_variable
 
+import 'package:cine_practica/core/entities/Calendar.dart';
 import 'package:cine_practica/core/entities/TypeOfTraining.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/presentation/calendar_screen.dart';
@@ -15,7 +16,7 @@ import 'package:intl/intl.dart';
 class HomeScreen extends StatelessWidget {
   static const String name = 'HomeScreen';
   UserManager userManager = UserManager();
-
+  Calendar negocio = Calendar();
   HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -131,8 +132,7 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 7),
             GestureDetector(
               onTap: () {
-                if (currentUser.timesDone.length ==
-                    currentUser.getRoutine()!.duration) {
+                if (negocio.isRoutineFinished()) {
                   context.pushNamed(RoutinesScreen.name);
                 } else {
                   context.pushNamed(RoutineScreen.name);
@@ -157,8 +157,7 @@ class HomeScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.fitness_center_rounded),
                       onPressed: () {
-                        if (currentUser.timesDone.length ==
-                            currentUser.getRoutine()!.duration) {
+                        if (negocio.isRoutineFinished()) {
                           context.pushNamed(RoutinesScreen.name);
                         } else {
                           context.pushNamed(RoutineScreen.name);
@@ -168,8 +167,7 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        currentUser.timesDone.length ==
-                                currentUser.getRoutine()!.duration
+                       negocio.isRoutineFinished()
                             ? '¡Felicidades! Has completado tu rutina. Haz clic aquí para dirigirte a la sección de rutinas y comenzar una nueva'
                             : 'Comience su sesión de entrenamiento y siga progresando hacia su meta',
                         style: TextStyle(
@@ -217,8 +215,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    currentUser.timesDone.length ==
-                            currentUser.getRoutine()!.duration
+                   negocio.isRoutineFinished()
                         ? 'Rutina finalizada'
                         : 'Días entrenados: ${currentUser.timesDone.length} / ${routine.duration}',
                     style: TextStyle(fontSize: 13, color: Colors.white),

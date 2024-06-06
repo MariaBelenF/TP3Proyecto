@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cine_practica/core/entities/Calendar.dart';
 import 'package:cine_practica/core/entities/User.dart';
 import 'package:cine_practica/core/entities/UserManager.dart';
 import 'package:cine_practica/presentation/custom_alert_dialog.dart';
@@ -24,10 +25,12 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   UserManager manager = UserManager();
   late String routineTitle;
-  late List<int> _routineDays;
+  late List<int> _routineDays = [];
   late Set<DateTime> _exerciseDays;
   late Usuario loggedUser;
-  
+  Calendar negocio = Calendar();
+
+
 void _showCustomDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -40,52 +43,32 @@ void _showCustomDialog(BuildContext context) {
   void initState() {
     super.initState();
     loggedUser = manager.getLoggedUser()!;
-    if (loggedUser.timesDone.length == loggedUser.getRoutine()!.duration) {
+    if (negocio.isRoutineFinished()) {
       Future.delayed(Duration.zero, () {
         _showCustomDialog(context);
       });
     }
     
-    if (loggedUser != null && loggedUser.currentRoutine != null) {
-      routineTitle = loggedUser.currentRoutine!.title;
-      _routineDays =
-          List<int>.generate(loggedUser.currentRoutine!.duration, (i) => i + 1);
-      _exerciseDays = loggedUser.timesDone.toSet();
-
-      // Ordenar los días en daysDone
-      loggedUser.timesDone.sort((a, b) => a.compareTo(b));
-    } else {
-      routineTitle = 'No hay rutina asignada';
-      _routineDays = [];
-    }
+    if (manager.getRoutine() != null) {
+      _routineDays = manager.getRutineDays();
+      _exerciseDays = manager.getExerciseDays();
+      manager.ordenarLista();
+    } 
   }
 
-  
-
-  // Función para mostrar el diálogo al hacer clic en un día del calendario
   void _showConfirmationDialog(DateTime selectedDay) {
     bool isDayDone = loggedUser.timesDone.contains(selectedDay);
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        String texto = '';
-        if (isDayDone) {
-          texto =
-              'Este día (${selectedDay.day}/${selectedDay.month}) entrenaste! Deseas eliminar el registro?';
-        } else {
-          texto = '¿Entrenaste el ${selectedDay.day}/${selectedDay.month}?';
-        }
+        
         return AlertDialog(
-          title: Text(
-              loggedUser.timesDone.length == loggedUser.getRoutine()!.duration
-                  ? 'Rutina Completada'
-                  : 'Confirmar entrenamiento'),
-          content: Text(loggedUser.timesDone.length ==
-                  loggedUser.getRoutine()!.duration
+          title: Text(negocio.getDialogContent()),
+          content: Text(negocio.isRoutineFinished()
               ? 'Ya finalizaste esta rutina. Dirígete hacia Rutinas para comenzar otra'
-              : texto),
+              : negocio.getDialogTitle(selectedDay)),
           actions:
-              loggedUser.timesDone.length == loggedUser.getRoutine()!.duration
+              negocio.isRoutineFinished()
                   ? [
                       TextButton(
                         onPressed: () {
@@ -110,7 +93,7 @@ void _showCustomDialog(BuildContext context) {
                             } else {
                               loggedUser.removeDayDone(selectedDay);
                             }
-                            loggedUser.timesDone.sort((a, b) => a.compareTo(b));
+                            manager.ordenarLista();
                           });
                           manager.updateLoggedUser();
                           Navigator.pop(context);
@@ -142,77 +125,7 @@ void _showCustomDialog(BuildContext context) {
     );
   }
 
-  String _getMonthName(int month) {
-    String es_month = "";
-    switch (month) {
-      case 1:
-        es_month = "Enero";
-        break;
-      case 2:
-        es_month = "Febrero";
-        break;
-      case 3:
-        es_month = "Marzo";
-        break;
-      case 4:
-        es_month = "Abril";
-        break;
-      case 5:
-        es_month = "Mayo";
-        break;
-      case 6:
-        es_month = "Junio";
-        break;
-      case 7:
-        es_month = "Julio";
-        break;
-      case 8:
-        es_month = "Agosto";
-        break;
-      case 9:
-        es_month = "Septiembre";
-        break;
-      case 10:
-        es_month = "Octubre";
-        break;
-      case 11:
-        es_month = "Noviembre";
-        break;
-      case 12:
-        es_month = "Diciembre";
-        break;
-    }
-    return es_month;
-  }
-
-  String _getDayName(int day) {
-    String es_day = "";
-    switch (day) {
-      case 1:
-        es_day = "Lunes";
-        break;
-      case 2:
-        es_day = "Martes";
-        break;
-      case 3:
-        es_day = "Miércoles";
-        break;
-      case 4:
-        es_day = "Jueves";
-        break;
-      case 5:
-        es_day = "Viernes";
-        break;
-      case 6:
-        es_day = "Sábado";
-        break;
-      case 7:
-        es_day = "Domingo";
-        break;
-    }
-    return es_day;
-  }
-
+ 
   void _informationDialog() {
     showDialog(
         context: context,
@@ -232,9 +145,7 @@ void _showCustomDialog(BuildContext context) {
  
 
   @override
- 
-     Widget build(BuildContext context) {
-   
+  Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 1),
       appBar: AppBar(
@@ -297,11 +208,11 @@ void _showCustomDialog(BuildContext context) {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: loggedUser.timesDone.length,
+                itemCount: manager.getExerciseDays().length,
                 itemBuilder: (context, index) {
                   DateTime day = loggedUser.timesDone[index];
-                  String dayName = _getDayName(day.weekday);
-                  String monthName = _getMonthName(day.month);
+                  String dayName = negocio.getDayName(day.weekday);
+                  String monthName = negocio.getMonthName(day.month);
                   return ListTile(
                     title: Text('$dayName, ${day.day} de $monthName'),
                   );

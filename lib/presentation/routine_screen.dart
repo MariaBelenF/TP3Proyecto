@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cine_practica/core/entities/Calendar.dart';
 import 'package:cine_practica/core/entities/Exercise.dart';
+import 'package:cine_practica/core/entities/RoutineLogic.dart';
 import 'package:cine_practica/presentation/custom_alert_dialog.dart';
 import 'package:cine_practica/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,25 +20,29 @@ class RoutineScreen extends StatefulWidget {
 
 class _RoutineScreenState extends State<RoutineScreen> {
   final UserManager manager = UserManager();
-
+  Calendar negocio = Calendar();
   late List<Exercise> exercises;
   Map<int, bool> checkedStatus = {};
+  RoutineLogic _logic = RoutineLogic();
 
   @override
   void initState() {
     super.initState();
     final user = manager.getLoggedUser();
 
-     if (user!.timesDone.length == user.getRoutine()!.duration) {
+    if (negocio.isRoutineFinished()) {
       Future.delayed(Duration.zero, () {
         _showCustomDialog(context);
       });
     }
-    exercises = user?.getRoutine()?.exercises ?? [];
-    // Inicializar checkedStatus
-    for (var i = 0; i < exercises.length; i++) {
-      checkedStatus[i] = false;
-    }
+    exercises = _logic.getExercises();
+  _initializeCheckedStatus();
+  }
+
+  void _initializeCheckedStatus() {
+    setState(() {
+      exercises = _logic.getExercises();
+    });
   }
 
   void _toggleExerciseDone(int index) {
@@ -44,7 +50,8 @@ class _RoutineScreenState extends State<RoutineScreen> {
       exercises[index].toggleDone();
     });
   }
-void _showCustomDialog(BuildContext context) {
+
+  void _showCustomDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -52,15 +59,22 @@ void _showCustomDialog(BuildContext context) {
       },
     );
   }
+
   void _confirmationDetail(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Entrenamiento registrado'),
-            content: Column(children: [TextButton(onPressed: (){
-              Navigator.of(context).pop();
-            }, child: Text('Cerrar'))],),
+            content: Column(
+              children: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Cerrar'))
+              ],
+            ),
           );
         });
   }
@@ -94,14 +108,6 @@ void _showCustomDialog(BuildContext context) {
             ],
           );
         });
-  }
-
-  void _resetExercises() {
-    setState(() {
-      for (var exercise in exercises) {
-        exercise.done = false;
-      }
-    });
   }
 
   @override
@@ -182,13 +188,12 @@ void _showCustomDialog(BuildContext context) {
             SizedBox(height: 10),
             ElevatedButton(
                 onPressed: () {
-                  if(user!.timesDone.length == user.getRoutine()!.duration){
+                  if (negocio.isRoutineFinished()) {
                     _showCustomDialog(context);
-                  }else{
-                     DateTime dia = DateTime.now();
-                  currentUser!.addDayDone(dia);
-                  manager.updateLoggedUser;
-                  _resetExercises();
+                  } else {
+                    _logic.addTrainingDay(DateTime.now(), currentUser);
+                    manager.resetExercises();
+                    _initializeCheckedStatus();
                     _confirmationDetail(context);
                   }
                 },

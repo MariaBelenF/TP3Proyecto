@@ -58,4 +58,25 @@ class UserManager {
     }
   }
 
+  Routine? getRoutine(){
+    return _loggedUser!.getRoutine();
+  }
+
+  List<int> getRutineDays(){
+    return List<int>.generate(_loggedUser!.currentRoutine!.duration, (i) => i + 1);
+  }
+
+  Set<DateTime> getExerciseDays(){
+    return _loggedUser!.timesDone.toSet();
+  }
+
+  void ordenarLista(){
+    _loggedUser!.timesDone.sort((a, b) => a.compareTo(b));
+  }
+
+    void resetExercises() {
+     _loggedUser!.getRoutine()!.resetExercises();
+    
+  }
+
 }
