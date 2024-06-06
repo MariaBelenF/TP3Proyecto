@@ -16,7 +16,6 @@ class UpdateService {
         'age': usuario.age,
         'training': usuario.training?.name,
         'idCurrentRoutine': usuario.training?.index,
-        // 'timesDone': usuario.timesDone,
         'timesDone': usuario.timesDone.map((e) => e.toIso8601String()).toList(),
       }),
     );
